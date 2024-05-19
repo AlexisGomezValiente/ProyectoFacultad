@@ -1,0 +1,46 @@
+.nav{
+    display: flex;
+    width: 100%;
+    height: 80px;
+    position: fixed;
+    justify-content: space-between;
+    background-color: white;
+    z-index: 2;
+    top: 0;
+}
+
+.nav div{
+    display: flex;
+    margin: 0 20px;
+}
+
+.nav div h2{
+    margin: auto 15px;
+    color: gray;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.nav div h2:hover{
+    color: red;
+}
+
+.cart{
+    font-size: 30px;
+    color: white;
+}
+
+.carth2{
+    background-color: red;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.carth2 span{
+    margin-left: 15px;
+    color: white;
+}
+
+.carth2:hover{
+    background-color: rgb(133, 7, 7);
+}

@@ -1,0 +1,86 @@
+.producto{
+    display: flex;
+    padding: 20px;
+    align-items: center;
+}
+
+.producto img{
+    width: 150px;
+}
+
+.producto div{
+    margin-left: 20px;
+}
+
+.producto div p{
+    font-size: 20px;
+}
+
+.producto div div{
+    display: flex;
+}
+
+.btnMenos{
+    background-color: red;
+    border: none;
+    border-radius: 15px 0 0 15px;
+    color: white;
+    width: 40px;
+    font-size: 20px;
+    align-items: center;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+.btnMas{
+    background-color: red;
+    border: none;
+    border-radius: 0 15px 15px 0;
+    color: white;
+    width: 40px;
+    font-size: 20px;
+    align-items: center;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+.producto div span{
+    width: 100px;
+    border: 1px solid red;
+    text-align: center;
+    font-size: 25px;
+}
+
+.title{
+    font-weight: bold;
+}
+
+.extra{
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.extra button{
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 25px;
+    width: 40px;
+}
+
+.extra p{
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.container{
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid rgb(206, 206, 206);
+}
