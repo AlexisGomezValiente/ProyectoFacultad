@@ -38,7 +38,7 @@ const ProductCart = (props) => {
         >
           X
         </button>
-        <p>Gs. {props.total}</p>
+        <p>$ {props.total}</p>
       </div>
     </div>
   );

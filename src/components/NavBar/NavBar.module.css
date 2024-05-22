@@ -4,7 +4,7 @@
     height: 80px;
     position: fixed;
     justify-content: space-between;
-    background-color: white;
+    background-color: rgb(237, 237, 237);
     z-index: 2;
     top: 0;
 }
@@ -14,7 +14,8 @@
     margin: 0 20px;
 }
 
-.nav div h2{
+.nav div h2, .linkh2{
+    text-decoration: none;
     margin: auto 15px;
     color: gray;
     cursor: pointer;
@@ -43,4 +44,8 @@
 
 .carth2:hover{
     background-color: rgb(133, 7, 7);
+}
+
+.email{
+    color: red;
 }
