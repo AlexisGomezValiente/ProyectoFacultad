@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const jwt = require("jsonwebtoken");
 const { Pool } = require("pg");
 
 // Configuración de la base de datos
@@ -27,14 +28,17 @@ app.post("/login", async (req, res) => {
     );
 
     if (result.rows.length > 0) {
-      // Usuario autenticado
-      res.status(200).json({
-        message: "Inicio de sesión exitoso",
-        id: result.rows[0].email,
-        rol: result.rows[0].rol,
-      });
+      // Usuario autenticado, genera un token JWT
+      const token = jwt.sign({ email: result.rows[0].email }, "secret_key");
+      res
+        .status(200)
+        .json({
+          message: "Inicio de sesión exitoso",
+          token,
+          id: result.rows[0].email,
+          rol: result.rows[0].rol,
+        });
     } else {
-      // Usuario no encontrado o contraseña incorrecta
       res.status(401).json({ message: "Usuario o contraseña incorrectos" });
     }
   } catch (error) {
@@ -42,7 +46,6 @@ app.post("/login", async (req, res) => {
     res.status(500).json({ message: "Error del servidor" });
   }
 });
-
 app.post("/registro", async (req, res) => {
   const { email, pass } = req.body;
   try {
@@ -106,8 +109,6 @@ app.post("/addproducto", async (req, res) => {
 app.post("/consultaproductos", async (req, res) => {
   try {
     const result = await pool.query("SELECT * FROM productos");
-
-    console.log(result);
 
     res.status(200).json({
       message: "Consulta exitoso",

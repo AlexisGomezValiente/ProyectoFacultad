@@ -29,11 +29,19 @@ const Login = (props) => {
         body: JSON.stringify(form),
       });
 
-      const res = await response.json();
-      props.iniciarSesion(res.id, res.rol);
-
       if (response.ok) {
-        navigate('/')
+        const data = await response.json();
+        localStorage.setItem("token", data.token);
+        localStorage.setItem(`email_${data.id}`, data.id);
+        const email = localStorage.getItem(`email_${data.id}`);
+
+        const obj = {
+          cantidad: parseInt(localStorage.getItem(`cantidad_${data.id}`)), 
+          total: parseInt(localStorage.getItem(`total_${data.id}`)),
+          products: JSON.parse(localStorage.getItem(`productos_${data.id}`))
+        }
+        props.iniciarSesion(email, data.rol, obj);
+        navigate('/');
       } else {
         // El inicio de sesión falló, muestra un mensaje de error al usuario
         alert("Usuario o contraseña incorrectos");
@@ -51,7 +59,7 @@ const Login = (props) => {
         </div>
         <form onChange={handleChange} onSubmit={handleSubmit}>
           <input type="text" id="email" placeholder="E-mail:" />
-          <input type="text" id="pass" placeholder="Password:" />
+          <input type="password" id="pass" placeholder="Password:" /> {/* Cambiado a type="password" para ocultar la contraseña */}
           <button type="submit">Ingresar</button>
         </form>
       </div>

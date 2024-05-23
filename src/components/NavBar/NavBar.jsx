@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import style from "./NavBar.module.css";
 import logo from "../../img/logo.png";
 import { FaShoppingCart } from "react-icons/fa";
@@ -6,6 +7,20 @@ import { Link } from "react-router-dom";
 
 const NavBar = (props) => {
   const navigate = useNavigate();
+  const [cartQuantity, setCartQuantity] = useState(() => {
+    // Obtener la cantidad almacenada en localStorage, o 0 si no hay datos
+    return parseInt(localStorage.getItem(`cantidad_${props.emailUser}`)) || 0;
+  });
+
+  // Actualizar la cantidad del carrito cuando cambie en las propiedades
+  useEffect(() => {
+    setCartQuantity(props.cantidad);
+    if (localStorage.getItem("token")) {
+      localStorage.setItem(`cantidad_${props.emailUser}`, props.cantidad);
+    }else{
+      setCartQuantity(0);
+    }
+  }, [props.cantidad]);
 
   return (
     <nav className={style.nav}>
@@ -15,7 +30,7 @@ const NavBar = (props) => {
         </Link>
         {props.rol == 1 ? (
           <Link to="/productos" className={style.linkh2}>
-            <h2>Articulos</h2>{" "}
+            <h2>Articulos</h2>
           </Link>
         ) : null}
 
@@ -26,17 +41,19 @@ const NavBar = (props) => {
           }}
         >
           <FaShoppingCart className={style.cart} />
-          <span>{props.cantidad}</span>
+          <span>{cartQuantity}</span>
         </h2>
       </div>
       <div>
         <img src={logo} alt="" />
       </div>
       <div className={style.divNav2}>
-        {props.emailUser ? (
+        {localStorage.getItem("token") ? (
           <>
             <h2>
-              <span className={style.email}>{props.emailUser}</span>
+              <span className={style.email}>
+                {localStorage.getItem(`email_${props.emailUser}`)}
+              </span>
             </h2>
             <h2 onClick={props.cerrarSesion}>Cerrar Sesion</h2>
           </>
