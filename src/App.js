@@ -10,8 +10,9 @@ import Registro from "./components/Registro/Registro";
 import ProductosGestion from "./components/ProductosGestion/ProductosGestion";
 
 function App() {
-  console.log(localStorage)
-  const [emailUser, setEmailUser] = useState(null);
+  const [emailUser, setEmailUser] = useState(() => {
+    return localStorage.getItem("ultimoEmail") || null;
+  });
   const [cantidad, setCantidad] = useState(() => {
     return parseInt(localStorage.getItem(`cantidad_${emailUser}`)) || 0;
   });
@@ -28,9 +29,11 @@ function App() {
     setEmailUser(id);
     if (rol === 1) adminRol();
 
-    setCantidad(obj.cantidad ? obj.cantidad : 0)
-    setTotal(obj.total ? obj.total : 0)
-    setProductos(obj.products ? obj.products : [])
+    localStorage.setItem('rol', rol)
+
+    setCantidad(obj.cantidad ? obj.cantidad : 0);
+    setTotal(obj.total ? obj.total : 0);
+    setProductos(obj.products ? obj.products : []);
   };
 
   const cerrarSesion = () => {
@@ -40,12 +43,14 @@ function App() {
     localStorage.setItem(`cantidad_${emailUser}`, cantidad);
     localStorage.setItem(`email_${emailUser}`, emailUser);
 
-    setEmailUser(null);
     userRol();
+
+    setEmailUser(null);
     setCantidad(0);
     setProductos([]);
     setTotal(0);
     localStorage.removeItem("token");
+    localStorage.removeItem('rol');
   };
 
   const adminRol = () => {
@@ -114,15 +119,18 @@ function App() {
         suma += Number(producto.totalPrecio);
       });
       setTotal(suma);
-  
+
       let sumaCantidad = 0;
       productos.forEach((producto) => {
         sumaCantidad += producto.cantidad;
       });
       setCantidad(sumaCantidad);
-  
-      if(localStorage.getItem('token')){
-        localStorage.setItem(`productos_${emailUser}`, JSON.stringify(productos))
+
+      if (localStorage.getItem("token")) {
+        localStorage.setItem(
+          `productos_${emailUser}`,
+          JSON.stringify(productos)
+        );
       }
     }
   }, [productos]);
@@ -134,6 +142,12 @@ function App() {
       localStorage.setItem(`cantidad_${emailUser}`, cantidad);
     }
   }, [total, cantidad]);
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      localStorage.setItem("ultimoEmail", emailUser);
+    }
+  }, [emailUser]);
 
   return (
     <div className="App">
@@ -165,6 +179,7 @@ function App() {
               deleteToCart={deleteToCart}
               sacarCart={sacarCart}
               emailUser={emailUser}
+              setProductos={setProductos}
             />
           }
         />

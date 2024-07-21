@@ -15,7 +15,7 @@ const ProductosGestion = (props) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (props.rol != 1) navigate("/");
+    if (localStorage.getItem('rol') != '1') navigate("/");
   }, []);
 
   const handleChange = (e) => {

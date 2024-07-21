@@ -9,11 +9,11 @@ const pool = new Pool({
   host: "localhost",
   database: "proyecto",
   password: "alexis123",
-  port: 5432,
+  port: 5433,
 });
 
 const app = express();
-const PORT = 3001;
+const PORT = 3003;
 
 // Middleware
 app.use(bodyParser.json());
@@ -42,10 +42,10 @@ app.post("/login", async (req, res) => {
       res.status(401).json({ message: "Usuario o contraseña incorrectos" });
     }
   } catch (error) {
-    console.error("Error al iniciar sesión:", error);
     res.status(500).json({ message: "Error del servidor" });
   }
 });
+
 app.post("/registro", async (req, res) => {
   const { email, pass } = req.body;
   try {
@@ -72,27 +72,29 @@ app.post("/registro", async (req, res) => {
           repetido: false,
         });
       } else {
-        // Usuario no encontrado o contraseña incorrecta
         res.status(401).json({ message: "Error al registrar" });
       }
     }
   } catch (error) {
-    console.error("Error al registrar:", error);
     res.status(500).json({ message: "Error del servidor" });
   }
 });
 
 app.post("/addproducto", async (req, res) => {
+  //Recibe datos
   const { img, precio, titulo, descripcion } = req.body;
   try {
+    //Guardar el producto en la base de datos
     const result = await pool.query(
       "INSERT INTO productos(img, precio, titulo, descripcion) VALUES ($1, $2, $3, $4)",
       [img, Number(precio), titulo, descripcion]
     );
 
+    //Seleccionar todos los productos para su posterior muestreo
     const result1 = await pool.query("SELECT * FROM productos");
 
     if (result.rowCount > 0) {
+      //Retornar el estado de la peticion y los datos
       res.status(200).json({
         message: "Registro exitoso",
         datos: result1.rows,
@@ -100,6 +102,7 @@ app.post("/addproducto", async (req, res) => {
     } else {
       res.status(401).json({ message: "Error al registrar productos" });
     }
+    //Esta se ejecuta solo si ocurrio un error
   } catch (error) {
     console.error("Error al registrar productos:", error);
     res.status(500).json({ message: "Error del servidor" });

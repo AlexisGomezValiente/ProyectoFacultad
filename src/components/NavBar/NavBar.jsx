@@ -17,8 +17,6 @@ const NavBar = (props) => {
     setCartQuantity(props.cantidad);
     if (localStorage.getItem("token")) {
       localStorage.setItem(`cantidad_${props.emailUser}`, props.cantidad);
-    }else{
-      setCartQuantity(0);
     }
   }, [props.cantidad]);
 
@@ -28,7 +26,7 @@ const NavBar = (props) => {
         <Link to="/" className={style.linkh2}>
           <h2>Inicio</h2>
         </Link>
-        {props.rol == 1 ? (
+        {localStorage.getItem('rol') == '1' ? (
           <Link to="/productos" className={style.linkh2}>
             <h2>Articulos</h2>
           </Link>
